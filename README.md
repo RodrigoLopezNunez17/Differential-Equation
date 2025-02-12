@@ -28,7 +28,14 @@ $$
 Once we have this system, using linear algebra we can obtain a matrix of coefficients and the system will be reexpressed as follows:
 
 $$
-\begin{pmatrix} F_n \\ b_n  \end{pmatrix} = \begin{pmatrix} 1 && 1 \\ 1 && 0 \end{pmatrix} \begin{pmatrix} F_(n - 1) \\ b_(n-1) \end{pmatrix}
+\begin{pmatrix} F_n \\ 
+b_n  
+\end{pmatrix} = \begin{pmatrix} 1 && 1 \\ 
+1 && 0 
+\end{pmatrix} 
+\begin{pmatrix} F_(n - 1) \\ 
+b_(n-1) 
+\end{pmatrix}
 $$
 
 ### Second Step:
