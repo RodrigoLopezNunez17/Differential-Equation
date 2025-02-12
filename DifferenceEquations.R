@@ -1,3 +1,6 @@
+library(MASS)
+
+
 # We define the coefficient matrix A.
 
 A <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow=TRUE)
@@ -109,3 +112,10 @@ EigenVectors <- function(A, eigenvalues){
         }
     }
 }
+
+
+(3 - sqrt(5))/2
+(-sqrt(5) - 1)/2
+
+B <- matrix(c(0.381966, 1, 1, -1.61834), nrow = 2, ncol = 2, byrow = TRUE)
+
