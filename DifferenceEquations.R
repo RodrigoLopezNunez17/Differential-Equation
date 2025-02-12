@@ -119,3 +119,4 @@ EigenVectors <- function(A, eigenvalues){
 
 B <- matrix(c(0.381966, 1, 1, -1.61834), nrow = 2, ncol = 2, byrow = TRUE)
 
+solve(B)

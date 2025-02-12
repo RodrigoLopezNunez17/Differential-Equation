@@ -20,7 +20,9 @@ So that, now we have a system of equations:
 
 $$
 \begin{cases} 
-F_n = F_(n - 1) + b_(n - 1) \\ b_n = F_(n - 1) \end{cases}
+F_n = F_(n - 1) + b_(n - 1) \\ 
+b_n = F_(n - 1) 
+\end{cases}
 $$
 
 Once we have this system, using linear algebra we can obtain a matrix of coefficients and the system will be reexpressed as follows:
