@@ -120,3 +120,26 @@ EigenVectors <- function(A, eigenvalues){
 B <- matrix(c(0.381966, 1, 1, -1.61834), nrow = 2, ncol = 2, byrow = TRUE)
 
 solve(B)
+
+
+a <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow= TRUE)
+
+b <- matrix(c(1, 2, 1, 0), nrow = 2, ncol = 2, byrow = TRUE)
+
+a_eigen <- eigen(a)
+a_eigenvalues <- a_eigen$values
+a_eigenvectors <- a_eigen$vectors
+
+d <- diag(a_eigenvalues)
+
+c <- a_eigenvectors
+
+c_inv <- solve(c)
+
+c %*% d %*% c_inv
+
+eigen(t(b))
+
+m <- matrix(c(1, 1, 1, 2), nrow = 2, ncol = 2, byrow = TRUE)
+
+eigen(m)

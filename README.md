@@ -3,7 +3,7 @@
 Along the time, there's been a number of phenomena that human beings have been attracted to. One of the forms, we found are difference equations, one of the most known examples is Fibonacci Series, which consists on summing the two previous terms of the series:
 
 $$
-F_n = F_(n - 1) + F_(n - 2)
+F_n = F_(n - 1) + 2 F_(n - 2)
 $$
 
 This type of series have an inconvenient, we need to calculate all the terms before our nth or in such case, we'd need to know an itermediate pair of terms belonged to the series. Here's where the method i want to discuss come which consists on, using the difference equation, get a universal formula which is in function of the nth term and not to the previous terms.
@@ -20,7 +20,7 @@ So that, now we have a system of equations:
 
 $$
 \begin{cases} 
-F_n = F_(n - 1) + b_(n - 1) \\ 
+F_n = F_(n - 1) + 2b_(n - 1) \\ 
 b_n = F_(n - 1) 
 \end{cases}
 $$
@@ -30,7 +30,7 @@ Once we have this system, using linear algebra we can obtain a matrix of coeffic
 $$
 \begin{pmatrix} F_n \\ 
 b_n  
-\end{pmatrix} = \begin{pmatrix} 1 && 1 \\ 
+\end{pmatrix} = \begin{pmatrix} 1 && 2 \\ 
 1 && 0 
 \end{pmatrix} 
 \begin{pmatrix} F_(n - 1) \\ 
@@ -42,7 +42,7 @@ $$
 
 Then, since we have already a equation with its coefficient matrix. We can use this last one and make a diagonalization of the matrix so that, we would have an equavalent equation of the one ew already have. To do so, we need to get three matrices: **C**, **D**, and **C_inv**. To get C, we need to get the eigenvectors, so that we need the eigenvalues. In this example, i'll be relying on R language:
 
-```R language
+```R
 A <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow = TRUE)
 
 eigenvalues <- eigen(A)$values
@@ -143,7 +143,7 @@ EigenVectors <- function(A, eigenvalues){
             print(m1_1)
             print(m1_2)
 
-          
+        
         } else {
             print("These vectors are from the second matrx")
             m2_1 <- as.vector(m2[1, ])
