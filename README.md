@@ -43,10 +43,17 @@ $$
 Then, since we have already a equation with its coefficient matrix. We can use this last one and make a diagonalization of the matrix so that, we would have an equavalent equation of the one ew already have. To do so, we need to get three matrices: **C**, **D**, and **C_inv**. To get C, we need to get the eigenvectors, so that we need the eigenvalues. In this example, i'll be relying on R language:
 
 ```R
-A <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow = TRUE)
+# install.packages("glue")
 
+library(Ryacas)
+library(glue)
+
+# We define the coefficient matrix A.
+
+A <- matrix(c(1, 2, 1, 0), nrow = 2, ncol = 2, byrow=TRUE)
+a1 <- 1
+a2 <- 2;
 eigenvalues <- eigen(A)$values
-> [1] 2 -1
 
 Prime <- function(n){
     isPrime <- TRUE
@@ -137,20 +144,91 @@ EigenVectors <- function(A, eigenvalues){
 
     for(matrix in 1:2){
         if(matrix == 1){
-            print("These are vectors from the first matrix")
+            # print("These are vectors from the first matrix")
             m1_1 <- as.vector(m1[1, ])
             m1_2 <- as.vector(m1[2, ])
-            print(m1_1)
-            print(m1_2)
+            # print(m1_1)
+            # print(m1_2)
 
-  
+            if(m1_1[1][1] > 0){
+                print("The first element is positive")
+            } else if(m1_1[2][1] > 0){
+                print("The second element is positive")
+            }
+              
+          
         } else {
-            print("These vectors are from the second matrx")
+            # print("These vectors are from the second matrx")
             m2_1 <- as.vector(m2[1, ])
             m2_2 <- as.vector(m2[2, ])
-            print(m2_1)
-            print(m2_2)
+            # print(m2_1)
+            # print(m2_2)
         }
     }
 }
+
+DiagonalizeMatrix <- function(A){
+    eigenvalues <- eigen(A)$values
+    eigenvectors <- eigen(A)$vectors
+
+    D <- diag(eigenvalues)
+
+    C <- eigenvectors
+
+    C_inv <- solve(C)
+
+    A_diag <- C %*% D %*% C_inv
+
+    # print("This is A")
+    # print(A)
+    # print("This is D")
+    # print(D)
+    # print("This is C")
+    # print(C)
+    # print("This is C_inv")
+    # print(C_inv)
+    # print("This is A_diag")
+    # print(A_diag)
+
+    return(list(C = C, D = D, C_inv = C_inv))
+}
+
+A_diag <- DiagonalizeMatrix(A)
+A_diag
+
+# Reestructuring the expression.
+
+C_exp <- glue("{ {<<A_diag$C[1, 1]>> , <<A_diag$C[1, 2]>>} , {<<A_diag$C[2, 1]>>,  <<A_diag$C[2, 2]>>} }", .open = "<<", .close = ">>")
+D_exp <- glue("{ {<<A_diag$D[1, 1]>>^(n - 2) , 0} , {0 , <<A_diag$D[2, 2]>>^(n - 2)} }", .open = "<<", .close = ">>")
+C_inv_exp <- glue("{ {<<A_diag$C_inv[1, 1]>>, <<A_diag$C_inv[1, 2]>>}, {<<A_diag$C_inv[2, 1]>>, <<A_diag$C_inv[2, 2]>>}}", .open = "<<", .close = ">>")
+v_exp <- glue("{ {<<a2>>, 0}, {<<a1>>, 0}}", .open = "<<", .close = ">>")
+print(C_exp)
+print(D_exp)
+print(C_inv_exp)
+print(v_exp)
+
+eq <- glue("{C_exp} * {D_exp} * {C_inv_exp} * {v_exp}")
+print(eq)
+
+result <- yac_str(glue("Simplify({eq})"))
+
+closeBrakets <- 0
+ans <- ""
+
+for(i in strsplit(result, "")[[1]]){
+    ans <- paste(ans, i)
+
+    if(i == "}"){
+        closeBrakets <- closeBrakets + 1
+    }
+
+    if(closeBrakets == 1){
+        print(paste("Close Brakets: ", closeBrakets))
+        print(ans)
+        break
+    }
+};
+
+ans <- gsub("}", "", ans)
+print(paste("A general formula for the difference equation is: ", ans))
 ```
