@@ -1,10 +1,13 @@
-library(MASS)
+# install.packages("glue")
 
+library(Ryacas)
+library(glue)
 
 # We define the coefficient matrix A.
 
-A <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow=TRUE)
-
+A <- matrix(c(1, 2, 1, 0), nrow = 2, ncol = 2, byrow=TRUE)
+a1 <- 1
+a2 <- 2;
 eigenvalues <- eigen(A)$values
 
 Prime <- function(n){
@@ -96,50 +99,90 @@ EigenVectors <- function(A, eigenvalues){
 
     for(matrix in 1:2){
         if(matrix == 1){
-            print("These are vectors from the first matrix")
+            # print("These are vectors from the first matrix")
             m1_1 <- as.vector(m1[1, ])
             m1_2 <- as.vector(m1[2, ])
-            print(m1_1)
-            print(m1_2)
+            # print(m1_1)
+            # print(m1_2)
 
+            if(m1_1[1][1] > 0){
+                print("The first element is positive")
+            } else if(m1_1[2][1] > 0){
+                print("The second element is positive")
+            }
+                
             
         } else {
-            print("These vectors are from the second matrx")
+            # print("These vectors are from the second matrx")
             m2_1 <- as.vector(m2[1, ])
             m2_2 <- as.vector(m2[2, ])
-            print(m2_1)
-            print(m2_2)
+            # print(m2_1)
+            # print(m2_2)
         }
     }
 }
 
+DiagonalizeMatrix <- function(A){
+    eigenvalues <- eigen(A)$values
+    eigenvectors <- eigen(A)$vectors
 
-(3 - sqrt(5))/2
-(-sqrt(5) - 1)/2
+    D <- diag(eigenvalues)
 
-B <- matrix(c(0.381966, 1, 1, -1.61834), nrow = 2, ncol = 2, byrow = TRUE)
+    C <- eigenvectors
 
-solve(B)
+    C_inv <- solve(C)
 
+    A_diag <- C %*% D %*% C_inv
 
-a <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow= TRUE)
+    # print("This is A")
+    # print(A)
+    # print("This is D")
+    # print(D)
+    # print("This is C")
+    # print(C)
+    # print("This is C_inv")
+    # print(C_inv)
+    # print("This is A_diag")
+    # print(A_diag)
 
-b <- matrix(c(1, 2, 1, 0), nrow = 2, ncol = 2, byrow = TRUE)
+    return(list(C = C, D = D, C_inv = C_inv))
+}
 
-a_eigen <- eigen(a)
-a_eigenvalues <- a_eigen$values
-a_eigenvectors <- a_eigen$vectors
+A_diag <- DiagonalizeMatrix(A)
+A_diag
 
-d <- diag(a_eigenvalues)
+# Reestructuring the expression.
 
-c <- a_eigenvectors
+C_exp <- glue("{ {<<A_diag$C[1, 1]>> , <<A_diag$C[1, 2]>>} , {<<A_diag$C[2, 1]>>,  <<A_diag$C[2, 2]>>} }", .open = "<<", .close = ">>")
+D_exp <- glue("{ {<<A_diag$D[1, 1]>>^(n - 2) , 0} , {0 , <<A_diag$D[2, 2]>>^(n - 2)} }", .open = "<<", .close = ">>")
+C_inv_exp <- glue("{ {<<A_diag$C_inv[1, 1]>>, <<A_diag$C_inv[1, 2]>>}, {<<A_diag$C_inv[2, 1]>>, <<A_diag$C_inv[2, 2]>>}}", .open = "<<", .close = ">>")
+v_exp <- glue("{ {<<a2>>, 0}, {<<a1>>, 0}}", .open = "<<", .close = ">>")
+print(C_exp)
+print(D_exp)
+print(C_inv_exp)
+print(v_exp)
 
-c_inv <- solve(c)
+eq <- glue("{C_exp} * {D_exp} * {C_inv_exp} * {v_exp}")
+print(eq)
 
-c %*% d %*% c_inv
+result <- yac_str(glue("Simplify({eq})"))
 
-eigen(t(b))
+closeBrakets <- 0
+ans <- ""
 
-m <- matrix(c(1, 1, 1, 2), nrow = 2, ncol = 2, byrow = TRUE)
+for(i in strsplit(result, "")[[1]]){
+    ans <- paste(ans, i)
 
-eigen(m)
+    if(i == "}"){
+        closeBrakets <- closeBrakets + 1
+    }
+
+    if(closeBrakets == 1){
+        print(paste("Close Brakets: ", closeBrakets))
+        print(ans)
+        break
+    }
+};
+
+ans <- gsub("}", "", ans)
+print(paste("A general formula for the difference equation is: ", ans))

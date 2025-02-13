@@ -46,7 +46,7 @@ Then, since we have already a equation with its coefficient matrix. We can use t
 A <- matrix(c(1, 1, 1, 0), nrow = 2, ncol = 2, byrow = TRUE)
 
 eigenvalues <- eigen(A)$values
-> [1] 1.618034 -0.618034
+> [1] 2 -1
 
 Prime <- function(n){
     isPrime <- TRUE
@@ -143,7 +143,7 @@ EigenVectors <- function(A, eigenvalues){
             print(m1_1)
             print(m1_2)
 
-        
+  
         } else {
             print("These vectors are from the second matrx")
             m2_1 <- as.vector(m2[1, ])
