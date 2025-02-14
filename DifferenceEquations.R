@@ -91,7 +91,6 @@ formula <- GeneralFormula(result)
 
 print(paste("A general formula for the difference equation is: ", formula))
 
-
 # Continuing, i'll prove that this procedure was correctly developed and that the 
 # formula is the right.
 
@@ -102,8 +101,12 @@ for(i in 1:34){
     a_n_2 <- SeriesElements[length(SeriesElements) - 1]
     SeriesElements <- append(SeriesElements, a_n_1 + (2 * a_n_2))
 }
-SeriesElements
 
+# Here, we are defining a function which will compare all the values of the "SeriesElements"
+# ,which is the vector with all the elements gotten manually; angainst the value that the
+# formula return. If the case is true for all the values the function will print "All the 
+# values are equal." and return "TRUE"; otherwise will print "The values aren't the same" and
+# will return "FALSe".
 Comprobation <- function(){
     for(n in length(SeriesElements)){
         nth_formula <- stri_replace_first_fixed(formula, "n", n)
