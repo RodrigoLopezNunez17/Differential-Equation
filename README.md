@@ -92,8 +92,9 @@ DiagonalizeMatrix <- function(A){
 # I define the diagonalization of the A matrix.
 A_diag <- DiagonalizeMatrix(A)
 
-# Constructing the equivalent expression of the initial equation. Furthermore, here we're using the "glue" library, so that we can handle 
-# strings in a comfortable way, at least that's my opinion.
+# Constructing the equivalent expression of the initial equation. Furthermore, here we're
+# using the "glue" library, so that we can handle strings in a comfortable way,
+# at least that's my opinion.
 C_exp <- glue("{ {<<A_diag$C[1, 1]>> , <<A_diag$C[1, 2]>>} , {<<A_diag$C[2, 1]>>,  <<A_diag$C[2, 2]>>} }", .open = "<<", .close = ">>")
 D_exp <- glue("{ {<<A_diag$D[1, 1]>>^(n - 2) , 0} , {0 , <<A_diag$D[2, 2]>>^(n - 2)} }", .open = "<<", .close = ">>")
 C_inv_exp <- glue("{ {<<A_diag$C_inv[1, 1]>>, <<A_diag$C_inv[1, 2]>>}, {<<A_diag$C_inv[2, 1]>>, <<A_diag$C_inv[2, 2]>>}}", .open = "<<", .close = ">>")
