@@ -43,7 +43,11 @@ $$
 Then, since we have already a equation with its coefficient matrix. We can use this last one and make a diagonalization of the matrix so that, we would have an equavalent equation of the one ew already have. To do so, we need to get three matrices: **C**, **D**, and **C_inv**. To get C, we need to get the eigenvectors, so that we need the eigenvalues. In this example, i'll be relying on R language:
 
 ```R
-
+# Here, we are defining a function which will compare all the values of the "SeriesElements"
+# ,which is the vector with all the elements gotten manually; angainst the value that the
+# formula return. If the case is true for all the values the function will print "All the 
+# values are equal." and return "TRUE"; otherwise will print "The values aren't the same" and
+# will return "FALSE".
 # install.packages("glue")
 # install.packages("Ryacas") 
 # install.packages("Stringi")
@@ -148,8 +152,12 @@ for(i in 1:34){
     a_n_2 <- SeriesElements[length(SeriesElements) - 1]
     SeriesElements <- append(SeriesElements, a_n_1 + (2 * a_n_2))
 }
-SeriesElements
 
+# Here, we are defining a function which will compare all the values of the "SeriesElements"
+# ,which is the vector with all the elements gotten manually; angainst the value that the
+# formula return. If the case is true for all the values the function will print "All the 
+# values are equal." and return "TRUE"; otherwise will print "The values aren't the same" and
+# will return "FALSE".
 Comprobation <- function(){
     for(n in length(SeriesElements)){
         nth_formula <- stri_replace_first_fixed(formula, "n", n)

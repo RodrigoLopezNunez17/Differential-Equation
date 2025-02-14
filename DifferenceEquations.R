@@ -106,7 +106,7 @@ for(i in 1:34){
 # ,which is the vector with all the elements gotten manually; angainst the value that the
 # formula return. If the case is true for all the values the function will print "All the 
 # values are equal." and return "TRUE"; otherwise will print "The values aren't the same" and
-# will return "FALSe".
+# will return "FALSE".
 Comprobation <- function(){
     for(n in length(SeriesElements)){
         nth_formula <- stri_replace_first_fixed(formula, "n", n)
