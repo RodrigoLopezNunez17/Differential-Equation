@@ -8,7 +8,7 @@ $$
 
 This type of series have an inconvenient, we need to calculate all the terms before our nth or in such case, we'd need to know an itermediate pair of terms belonged to the series. Here's where the method i want to discuss come which consists on, using the difference equation, get a universal formula which is in function of the nth term and not to the previous terms.
 
-### First Step:
+### First Step: 
 
 Knowing the difference equation we want to work with, we apply a little trick which consists on defining a new variable, in this case let's call it:
 
